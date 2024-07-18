@@ -15,4 +15,40 @@ public class Campo {
         this.linha = linha;
         this.coluna = coluna;
     }
+
+    public int getLinha() {
+        return linha;
+    }
+
+    public int getColuna() {
+        return coluna;
+    }
+
+    public boolean isAberto() {
+        return isAberto;
+    }
+
+    public void setAberto(boolean aberto) {
+        isAberto = aberto;
+    }
+
+    public boolean isMinado() {
+        return isMinado;
+    }
+
+    public void setMinado(boolean minado) {
+        isMinado = minado;
+    }
+
+    public boolean isMarcado() {
+        return isMarcado;
+    }
+
+    public void setMarcado(boolean marcado) {
+        isMarcado = marcado;
+    }
+
+    public List<Campo> getVizinhos() {
+        return vizinhos;
+    }
 }
