@@ -9,11 +9,12 @@ public class Campo {
     private boolean isAberto;
     private boolean isMinado;
     private boolean isMarcado;
-    private List<Campo> vizinhos = new ArrayList<>();
+    private List<Campo> vizinhos;
 
     public Campo(int linha, int coluna) {
         this.linha = linha;
         this.coluna = coluna;
+        this.vizinhos = new ArrayList<>();
     }
 
     public int getLinha() {
@@ -50,5 +51,17 @@ public class Campo {
 
     public List<Campo> getVizinhos() {
         return vizinhos;
+    }
+
+    @Override
+    public String toString() {
+        return "Campo{" +
+                "linha=" + linha +
+                ", coluna=" + coluna +
+                ", isAberto=" + isAberto +
+                ", isMinado=" + isMinado +
+                ", isMarcado=" + isMarcado +
+                ", vizinhos=" + vizinhos +
+                '}';
     }
 }

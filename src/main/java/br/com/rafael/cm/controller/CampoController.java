@@ -9,8 +9,8 @@ public class CampoController {
         boolean linhaDiferente = campoAtual.getLinha() != campoVizinho.getLinha();
         boolean colunaDiferente = campoAtual.getColuna() != campoVizinho.getColuna();
         boolean diagonal = linhaDiferente && colunaDiferente;
-        int deltaLinha = Math.abs(campoAtual.getColuna() - campoVizinho.getColuna());
-        int deltaColuna = Math.abs(campoAtual.getLinha() - campoVizinho.getLinha());
+        int deltaLinha = Math.abs(campoAtual.getLinha() - campoVizinho.getLinha());
+        int deltaColuna = Math.abs(campoAtual.getColuna() - campoVizinho.getColuna());
         int deltaGeral = deltaLinha + deltaColuna;
 
         if((deltaGeral == 1) || (deltaGeral == 2 && diagonal)){
@@ -20,14 +20,15 @@ public class CampoController {
         return false;
     }
 
-    public void alternarMarcacao(Campo campo){
+    public boolean alternarMarcacao(Campo campo){
         if(!campo.isAberto()){
             campo.setMarcado(!campo.isMarcado());
         }
+        return campo.isMarcado();
     }
 
     public boolean abrir(Campo campo){
-        if(!(campo.isAberto() && campo.isMarcado())){
+        if(!(campo.isAberto() || campo.isMarcado())){
             campo.setAberto(true);
             if(campo.isMinado()){
                 throw new ExplosaoException("Você perdeu o jogo");
@@ -43,4 +44,11 @@ public class CampoController {
     public boolean vizinhancaSegura(Campo campo){
         return campo.getVizinhos().stream().noneMatch(v -> v.isMinado());
     }
+
+    public void minarCampo(Campo campo){
+        if(!campo.isMinado()){
+            campo.setMinado(true);
+        }
+    }
+
 }
