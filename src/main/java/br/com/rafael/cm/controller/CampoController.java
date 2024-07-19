@@ -13,7 +13,7 @@ public class CampoController {
         int deltaColuna = Math.abs(campoAtual.getColuna() - campoVizinho.getColuna());
         int deltaGeral = deltaLinha + deltaColuna;
 
-        if((deltaGeral == 1) || (deltaGeral == 2 && diagonal)){
+        if((deltaGeral == 1 && !diagonal) || (deltaGeral == 2 && diagonal)){
             campoAtual.getVizinhos().add(campoVizinho);
             return true;
         }

@@ -1,5 +1,6 @@
 package br.com.rafael.cm.controller;
 
+import br.com.rafael.cm.exception.ExplosaoException;
 import br.com.rafael.cm.model.Campo;
 import br.com.rafael.cm.model.Tabuleiro;
 
@@ -7,12 +8,30 @@ public class TabuleiroController {
     Tabuleiro tabuleiro;
     CampoController campoController;
 
-    public void iniciarJogo(int linha, int coluna, int quantidadeMinas){
+    public TabuleiroController(int linha, int coluna, int quantidadeMinas){
         tabuleiro = new Tabuleiro(linha, coluna, quantidadeMinas);
         campoController = new CampoController();
         gerarCampos();
         associarVizinhos();
         sortearMinas();
+    }
+
+    public void abrir(int linha, int coluna){
+        try{
+            tabuleiro.getCampos().parallelStream().
+                    filter(c -> c.getLinha() == linha && c.getColuna() == coluna).
+                    findFirst().ifPresent(c -> campoController.abrir(c));
+        }catch (ExplosaoException e){
+            tabuleiro.getCampos().forEach(c -> c.setAberto(true));
+            throw e;
+        }
+
+    }
+
+    public void alterarMarcar(int linha, int coluna){
+        tabuleiro.getCampos().parallelStream().
+                filter(c -> c.getLinha() == linha && c.getColuna() == coluna).
+                findFirst().ifPresent(c -> campoController.alternarMarcacao(c));
     }
 
     private void gerarCampos() {
@@ -34,9 +53,9 @@ public class TabuleiroController {
     private void sortearMinas(){
         long minasArmadas = 0;
         while(minasArmadas < tabuleiro.getQuantidadeMinas()){
-            minasArmadas = tabuleiro.getCampos().stream().filter(c -> c.isMinado()).count();
             int aleatorio = (int) (Math.random() * tabuleiro.getCampos().size());
             campoController.minarCampo(tabuleiro.getCampos().get(aleatorio));
+            minasArmadas = tabuleiro.getCampos().stream().filter(c -> c.isMinado()).count();
         }
     }
 
@@ -49,5 +68,28 @@ public class TabuleiroController {
         sortearMinas();
     }
 
+    public String exibeTabuleiro(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("  ");
+        for(int coluna = 0; coluna < tabuleiro.getColunas(); coluna++){
+            sb.append(" ");
+            sb.append(coluna);
+            sb.append(" ");
+        }
+        sb.append("\n");
+        int index = 0;
+        for(int linha = 0; linha < tabuleiro.getLinhas(); linha++){
+            sb.append(linha);
+            sb.append(" ");
+            for(int coluna = 0; coluna < tabuleiro.getColunas(); coluna++){
+                sb.append(" ");
+                sb.append(campoController.exibeCampo(tabuleiro.getCampos().get(index)));
+                sb.append(" ");
+                index++;
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 
 }
