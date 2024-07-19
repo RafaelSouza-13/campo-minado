@@ -52,16 +52,4 @@ public class Campo {
     public List<Campo> getVizinhos() {
         return vizinhos;
     }
-
-    @Override
-    public String toString() {
-        return "Campo{" +
-                "linha=" + linha +
-                ", coluna=" + coluna +
-                ", isAberto=" + isAberto +
-                ", isMinado=" + isMinado +
-                ", isMarcado=" + isMarcado +
-                ", vizinhos=" + vizinhos +
-                '}';
-    }
 }

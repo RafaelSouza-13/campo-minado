@@ -51,4 +51,33 @@ public class CampoController {
         }
     }
 
+    public boolean campoConcluido(Campo campo){
+        boolean desvendado = !campo.isMinado() && campo.isAberto();
+        boolean protegido = campo.isMinado() && campo.isMarcado();
+        return desvendado || protegido;
+    }
+
+    public long minasNaVizinhanca(Campo campo){
+        return campo.getVizinhos().stream().filter(v-> v.isMinado()).count();
+    }
+
+    public void reiniciar(Campo campo){
+        campo.setAberto(false);
+        campo.setMinado(false);
+        campo.setMarcado(false);
+    }
+
+    public String exibeCampo(Campo campo){
+        if(campo.isMarcado()){
+            return "x";
+        }else if(campo.isAberto() && campo.isMinado()){
+            return "*";
+        }else if(campo.isAberto() && minasNaVizinhanca(campo) > 0){
+            return Long.toString(minasNaVizinhanca(campo));
+        }else if(campo.isAberto()){
+            return " ";
+        }else{
+            return "?";
+        }
+    }
 }
