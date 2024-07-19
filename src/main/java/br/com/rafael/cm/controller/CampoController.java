@@ -61,7 +61,7 @@ public class CampoController {
         return campo.getVizinhos().stream().filter(v-> v.isMinado()).count();
     }
 
-    public void reiniciar(Campo campo){
+    public void reiniciarCampo(Campo campo){
         campo.setAberto(false);
         campo.setMinado(false);
         campo.setMarcado(false);
