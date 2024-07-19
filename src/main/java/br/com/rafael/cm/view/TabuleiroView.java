@@ -12,9 +12,20 @@ public class TabuleiroView {
     private TabuleiroController tabuleiroController;
     private Scanner scanner = new Scanner(System.in);
 
-    public TabuleiroView(TabuleiroController tabuleiroController){
-        this.tabuleiroController = tabuleiroController;
+    public TabuleiroView(){
+        configurarJogo();
         executarJogo();
+    }
+
+    private void configurarJogo(){
+        System.out.print("Digite o número de linhas entre 1 e 9: ");
+        int linhas = scanner.nextInt();
+        System.out.print("Digite o colunas de linhas entre 1 e 9: ");
+        int colunas = scanner.nextInt();
+        System.out.print("Número de bombas: ");
+        int bombas = scanner.nextInt();
+        scanner.nextLine();
+        this.tabuleiroController = new TabuleiroController(linhas, colunas, bombas);
     }
 
     private void executarJogo() {
