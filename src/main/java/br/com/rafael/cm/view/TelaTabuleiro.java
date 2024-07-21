@@ -11,7 +11,7 @@ public class TelaTabuleiro extends JFrame {
     }
 
     public TelaTabuleiro(){
-        TabuleiroController tabuleiroController = new TabuleiroController(16, 30, 50);
+        TabuleiroController tabuleiroController = new TabuleiroController(16, 30, 20);
         add(new PainelTabuleiro(tabuleiroController));
         setTitle("Campo minado");
         setVisible(true);

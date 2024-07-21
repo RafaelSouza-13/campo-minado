@@ -75,4 +75,11 @@ public class Campo {
         boolean protegido = isMinado() && isMarcado();
         return desvendado || protegido;
     }
+
+    public void reiniciarCampo(){
+        setAberto(false);
+        setMinado(false);
+        setMarcado(false);
+        notificarObservadores(this, CampoEvento.REINICIAR);
+    }
 }

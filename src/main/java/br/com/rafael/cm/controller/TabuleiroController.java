@@ -79,7 +79,7 @@ public class TabuleiroController {
 
 
     public void reinicarJogo(){
-        tabuleiro.getCampos().stream().forEach(c -> campoController.reiniciarCampo(c));
+        tabuleiro.getCampos().stream().forEach(c -> c.reiniciarCampo());
         sortearMinas();
     }
 
