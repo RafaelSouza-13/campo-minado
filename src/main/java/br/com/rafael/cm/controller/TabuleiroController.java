@@ -70,9 +70,13 @@ public class TabuleiroController {
         }
     }
 
-    public boolean objetivoAlcancado(){
-        return tabuleiro.getCampos().stream().allMatch(c -> campoController.campoConcluido(c));
+
+    public void mostrarMinas(){
+        tabuleiro.getCampos().stream().filter(c -> c.isMinado()).
+                filter(c -> !c.isMarcado()).
+                forEach(c -> c.setAberto(true));
     }
+
 
     public void reinicarJogo(){
         tabuleiro.getCampos().stream().forEach(c -> campoController.reiniciarCampo(c));

@@ -65,11 +65,14 @@ public class Campo {
         observadores.add(observador);
     }
 
-    public void showObs(){
-        System.out.println(observadores);
-    }
 
     public void notificarObservadores(Campo campo, CampoEvento evento){
         observadores.stream().forEach(o -> o.evento(campo, evento));
+    }
+
+    public boolean concluido(){
+        boolean desvendado = !isMinado() && isAberto();
+        boolean protegido = isMinado() && isMarcado();
+        return desvendado || protegido;
     }
 }
