@@ -1,9 +1,24 @@
 package br.com.rafael.cm.controller;
 
+import br.com.rafael.cm.enuns.CampoEvento;
 import br.com.rafael.cm.exception.ExplosaoException;
+import br.com.rafael.cm.interfaces.CampoObservador;
 import br.com.rafael.cm.model.Campo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CampoController {
+    private List<CampoObservador> observadores = new ArrayList<>();
+    private Campo campo;
+
+    public void registraObservador(CampoObservador observador){
+        observadores.add(observador);
+    }
+
+    private void notificarObservadores(Campo campo, CampoEvento evento){
+        observadores.stream().forEach(o -> o.evento(this.campo, evento));
+    }
 
     public boolean adicionarVizinho(Campo campoAtual, Campo campoVizinho){
         boolean linhaDiferente = campoAtual.getLinha() != campoVizinho.getLinha();
@@ -23,15 +38,25 @@ public class CampoController {
     public boolean alternarMarcacao(Campo campo){
         if(!campo.isAberto()){
             campo.setMarcado(!campo.isMarcado());
+            if(campo.isMarcado()){
+                notificarObservadores(campo, CampoEvento.MARCAR);
+            }else{
+                notificarObservadores(campo, CampoEvento.DESMARCAR);
+            }
         }
         return campo.isMarcado();
     }
 
     public boolean abrir(Campo campo){
         if(!(campo.isAberto() || campo.isMarcado())){
-            campo.setAberto(true);
+
             if(campo.isMinado()){
-                throw new ExplosaoException("Você perdeu o jogo");
+                notificarObservadores(campo, CampoEvento.EXPLODIR);
+                return true;
+            }
+            campo.setAberto(true);
+            if(campo.isAberto()){
+                notificarObservadores(campo, CampoEvento.ABRIR);
             }
             if(vizinhancaSegura(campo)){
                 campo.getVizinhos().forEach(v -> abrir(v));
@@ -67,17 +92,5 @@ public class CampoController {
         campo.setMarcado(false);
     }
 
-    public String exibeCampo(Campo campo){
-        if(campo.isMarcado()){
-            return "x";
-        }else if(campo.isAberto() && campo.isMinado()){
-            return "*";
-        }else if(campo.isAberto() && minasNaVizinhanca(campo) > 0){
-            return Long.toString(minasNaVizinhanca(campo));
-        }else if(campo.isAberto()){
-            return " ";
-        }else{
-            return "?";
-        }
-    }
+
 }
