@@ -1,18 +1,15 @@
 package br.com.rafael.cm.controller;
 
-import br.com.rafael.cm.enuns.CampoEvento;
-import br.com.rafael.cm.interfaces.CampoObservador;
+
 import br.com.rafael.cm.model.Campo;
 import br.com.rafael.cm.model.Tabuleiro;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.function.Consumer;
 
-public class TabuleiroController implements CampoObservador {
+public class TabuleiroController {
     Tabuleiro tabuleiro;
     CampoController campoController;
-    private final List<Consumer<Boolean>> observadores = new ArrayList<>();
 
     public TabuleiroController(int linha, int coluna, int quantidadeMinas){
         tabuleiro = new Tabuleiro(linha, coluna, quantidadeMinas);
@@ -30,13 +27,7 @@ public class TabuleiroController implements CampoObservador {
         tabuleiro.getCampos().forEach(funcao);
     }
 
-    public void registrarObservador(Consumer<Boolean> observador){
-        observadores.add(observador);
-    }
 
-    private void notificarObservadores(boolean resultado){
-        observadores.stream().forEach(o -> o.accept(resultado));
-    }
 
     public void abrir(int linha, int coluna){
 
@@ -53,10 +44,10 @@ public class TabuleiroController implements CampoObservador {
     }
 
     private void gerarCampos() {
-        campoController.registraObservador(this);
         for(int linha = 0; linha < tabuleiro.getLinhas(); linha++){
             for(int coluna = 0; coluna < tabuleiro.getColunas(); coluna ++){
                 Campo campo = new Campo(linha, coluna);
+                campo.registraObservador(tabuleiro);
                 tabuleiro.getCampos().add(campo);
             }
         }
@@ -95,15 +86,15 @@ public class TabuleiroController implements CampoObservador {
     }
 
 
-    @Override
-    public void evento(Campo campo, CampoEvento evento) {
-        if(evento == CampoEvento.EXPLODIR){
-            mostrarMinas();
-            System.out.println("Perdeu");
-            notificarObservadores(false);
-        }else if(objetivoAlcancado()){
-            notificarObservadores(true);
-            System.out.println("Ganhou");
-        }
-    }
+    //@Override
+//    public void evento(Campo campo, CampoEvento evento) {
+//        if(evento == CampoEvento.EXPLODIR){
+//            mostrarMinas();
+//            System.out.println("Perdeu");
+//            notificarObservadores(false);
+//        }else if(objetivoAlcancado()){
+//            notificarObservadores(true);
+//            System.out.println("Ganhou");
+//        }
+//    }
 }

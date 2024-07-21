@@ -9,16 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CampoController {
-    private List<CampoObservador> observadores = new ArrayList<>();
-    private Campo campo;
-
-    public void registraObservador(CampoObservador observador){
-        observadores.add(observador);
-    }
-
-    private void notificarObservadores(Campo campo, CampoEvento evento){
-        observadores.stream().forEach(o -> o.evento(this.campo, evento));
-    }
 
     public boolean adicionarVizinho(Campo campoAtual, Campo campoVizinho){
         boolean linhaDiferente = campoAtual.getLinha() != campoVizinho.getLinha();
@@ -39,9 +29,9 @@ public class CampoController {
         if(!campo.isAberto()){
             campo.setMarcado(!campo.isMarcado());
             if(campo.isMarcado()){
-                notificarObservadores(campo, CampoEvento.MARCAR);
+                campo.notificarObservadores(campo, CampoEvento.MARCAR);
             }else{
-                notificarObservadores(campo, CampoEvento.DESMARCAR);
+                campo.notificarObservadores(campo, CampoEvento.DESMARCAR);
             }
         }
         return campo.isMarcado();
@@ -49,14 +39,13 @@ public class CampoController {
 
     public boolean abrir(Campo campo){
         if(!(campo.isAberto() || campo.isMarcado())){
-
             if(campo.isMinado()){
-                notificarObservadores(campo, CampoEvento.EXPLODIR);
+                campo.notificarObservadores(campo, CampoEvento.EXPLODIR);
                 return true;
             }
             campo.setAberto(true);
             if(campo.isAberto()){
-                notificarObservadores(campo, CampoEvento.ABRIR);
+                campo.notificarObservadores(campo, CampoEvento.ABRIR);
             }
             if(vizinhancaSegura(campo)){
                 campo.getVizinhos().forEach(v -> abrir(v));
@@ -82,8 +71,8 @@ public class CampoController {
         return desvendado || protegido;
     }
 
-    public long minasNaVizinhanca(Campo campo){
-        return campo.getVizinhos().stream().filter(v-> v.isMinado()).count();
+    public int minasNaVizinhanca(Campo campo){
+        return (int) campo.getVizinhos().stream().filter(v-> v.isMinado()).count();
     }
 
     public void reiniciarCampo(Campo campo){

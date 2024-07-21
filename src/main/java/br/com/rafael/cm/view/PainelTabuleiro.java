@@ -14,8 +14,8 @@ public class PainelTabuleiro extends JPanel {
         System.out.println(tabuleiroController.getTabuleiro().getColunas());
         setLayout(new GridLayout(tabuleiroController.getTabuleiro().getLinhas(), tabuleiroController.getTabuleiro().getColunas()));
         tabuleiroController.paraCada(c -> add(new BotaoCampo(c)));
-        tabuleiroController.registrarObservador(e -> {
-            // Depois mostrar resultado
+        tabuleiroController.getTabuleiro().registrarObservador(e -> {
+            //
         });
     }
 }

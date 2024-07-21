@@ -1,5 +1,8 @@
 package br.com.rafael.cm.model;
 
+import br.com.rafael.cm.enuns.CampoEvento;
+import br.com.rafael.cm.interfaces.CampoObservador;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +13,8 @@ public class Campo {
     private boolean isMinado;
     private boolean isMarcado;
     private List<Campo> vizinhos;
+    private List<CampoObservador> observadores = new ArrayList<>();
+
 
     public Campo(int linha, int coluna) {
         this.linha = linha;
@@ -51,5 +56,17 @@ public class Campo {
 
     public List<Campo> getVizinhos() {
         return vizinhos;
+    }
+
+    public void registraObservador(CampoObservador observador){
+        observadores.add(observador);
+    }
+
+    public void showObs(){
+        System.out.println(observadores);
+    }
+
+    public void notificarObservadores(Campo campo, CampoEvento evento){
+        observadores.stream().forEach(o -> o.evento(campo, evento));
     }
 }
