@@ -7,6 +7,7 @@ implementação do jogo campo minado em Java.
 ## Funcionalidades
 - Marcar minas suspeitas
 - Tamanho do tabuleiro e minhas configuráveis
+- Interface gráfica com swing
 
 ## Conhecimentos utilizados 
 - Java: Linguagem de programação utilizada para o desenvolvimento.
