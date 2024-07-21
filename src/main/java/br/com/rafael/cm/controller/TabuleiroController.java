@@ -80,10 +80,7 @@ public class TabuleiroController {
     }
 
 
-    public void mostrarMinas(){
-        tabuleiro.getCampos().stream().filter(c -> c.isMinado()).
-                forEach(c -> c.setAberto(true));
-    }
+
 
 
     //@Override

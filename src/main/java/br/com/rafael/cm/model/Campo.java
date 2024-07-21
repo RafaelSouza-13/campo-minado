@@ -36,6 +36,9 @@ public class Campo {
 
     public void setAberto(boolean aberto) {
         isAberto = aberto;
+        if(aberto){
+            notificarObservadores(this, CampoEvento.ABRIR);
+        }
     }
 
     public boolean isMinado() {

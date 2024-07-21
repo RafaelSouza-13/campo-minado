@@ -53,10 +53,19 @@ public class Tabuleiro implements CampoObservador {
     @Override
     public void evento(Campo campo, CampoEvento evento) {
         if(evento == CampoEvento.EXPLODIR){
-            System.out.println("Perdeu");
+            mostrarMinas();
+            System.out.println(observadores);
+            notificarObservadores(false);
         }else if(evento == CampoEvento.ABRIR){
             System.out.println("Abrir");
+            notificarObservadores(true);
         }
+    }
+
+    public void mostrarMinas(){
+        campos.stream().filter(c -> c.isMinado()).
+                filter(c -> !c.isMarcado()).
+                forEach(c -> c.setAberto(true));
     }
 
     public void registrarObservador(Consumer<Boolean> observador){
